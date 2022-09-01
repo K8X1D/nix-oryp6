@@ -8,6 +8,9 @@
 
 
 * Configuration
+/In development.../
+
+
 #+BEGIN_SRC nix :tangle /etc/nixos/hardware-configuration.nix
 
 # Edit this configuration file to define what should be installed on
