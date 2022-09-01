@@ -11,7 +11,7 @@
 /In development.../
 
 
-#+BEGIN_SRC nix :tangle /etc/nixos/hardware-configuration.nix
+#+BEGIN_SRC nix :tangle configuration.nix
 
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
@@ -178,7 +178,9 @@ services.xserver.videoDrivers = [ "nvidia" ];
     pkgs.libreoffice
     # IDE
     ((emacsPackagesFor emacs28NativeComp).emacsWithPackages (epkgs: [ epkgs.vterm
-                                                                      epkgs.markdown-preview-mode ]))
+                                                                      epkgs.markdown-preview-mode
+                                                                      epkgs.emacsql-sqlite
+                                                                    ]))
     pkgs.fd
     pkgs.ripgrep
     pkgs.cmake
