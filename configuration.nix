@@ -76,45 +76,46 @@
   services.printing.enable = true;
 
 
-# Intel
-#  services.xserver.videoDrivers = [ "modesetting" ];
-#  services.xserver.useGlamor = true;
+  # Intel
+  #  services.xserver.videoDrivers = [ "modesetting" ];
+  #  services.xserver.useGlamor = true;
 
-# Nvidia
-services.xserver.videoDrivers = [ "nvidia" ];
+  # Nvidia
+  services.xserver.videoDrivers = [ "nvidia" ];
 
-#  hardware.nvidia.modesetting.enable = true;
-#  services.xserver.videoDrivers = [ "nvidia" ];
-#  hardware.nvidia.prime = {
-#	  offload.enable = true;
-#
-## bus is nvidia
-#	  nvidiaBusId = "PCI:1:0:0";
-#
-## bus is intel
-#	  intelBusId = "PCI:0:2:0";
-#  };
-#
-#  hardware.nvidia = {
-#	  powerManagement = {
-#		  enable = true;
-#		  finegrained = true;
-#	  };
-#	  nvidiaPersistenced = true;
-#  };
+  #  hardware.nvidia.modesetting.enable = true;
+  #  services.xserver.videoDrivers = [ "nvidia" ];
+  #  hardware.nvidia.prime = {
+  #	  offload.enable = true;
+  #
+  ## bus is nvidia
+  #	  nvidiaBusId = "PCI:1:0:0";
+  #
+  ## bus is intel
+  #	  intelBusId = "PCI:0:2:0";
+  #  };
+  #
+  #  hardware.nvidia = {
+  #	  powerManagement = {
+  #		  enable = true;
+  #		  finegrained = true;
+  #	  };
+  #	  nvidiaPersistenced = true;
+  #  };
 
+  hardware.opengl.enable = true;
   hardware.nvidia = {
-	  modesetting.enable = true;
-	  prime = {
-		  offload.enable = true;
-		  intelBusId = "PCI:0:2:0";
-		  nvidiaBusId = "PCI:1:0:0";
-	  };
-	  powerManagement = {
-		  enable = true;
-		  finegrained = true;
-	  };
-	  nvidiaPersistenced = true;
+      modesetting.enable = true;
+      prime = {
+          offload.enable = true;
+          intelBusId = "PCI:0:2:0";
+          nvidiaBusId = "PCI:1:0:0";
+      };
+      powerManagement = {
+          enable = true;
+          finegrained = true;
+      };
+      nvidiaPersistenced = true;
   };
 
   # Enable system76 hardware support
@@ -147,7 +148,7 @@ services.xserver.videoDrivers = [ "nvidia" ];
     packages = with pkgs; [
       firefox
       kate
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
@@ -179,17 +180,20 @@ services.xserver.videoDrivers = [ "nvidia" ];
     pkgs.scrot
     pkgs.graphviz
     pkgs.pipenv
+    pkgs.ispell
 
-(let
-  my-python-packages = python-packages: with python-packages; [
+    (let
+      my-python-packages = python-packages: with python-packages; [
         isort
         nose
         pytest
-     #other python packages you want
-  ];
-  python-with-my-packages = python3.withPackages my-python-packages;
-in
-python-with-my-packages)
+        pandas
+        yt-dlp
+        #other python packages you want
+      ];
+      python-with-my-packages = python3.withPackages my-python-packages;
+    in
+      python-with-my-packages)
 
 
 
@@ -231,11 +235,13 @@ python-with-my-packages)
     pkgs.gimp
     pkgs.htop
     pkgs.pass
-    pkgs.pinentry
+    pkgs.pinentry-curses
     pkgs.gnupg
+    pkgs.ffmpeg
 
-    # CUDA TODO: retry installation with faster internet
-    # pkgs.cudaPackages.cudatoolkit
+    # CUDA
+    #pkgs.linuxKernel.packages.linux_5_15.nvidia_x11 # fix for https://discourse.nixos.org/t/fixup-phase-cant-find-libcuda-so-1-build-abort-how-to-provide-dummy-libcuda-so-1/9541
+    pkgs.cudaPackages.cudatoolkit
 
     #  wget
     # git
@@ -270,16 +276,16 @@ python-with-my-packages)
   system.stateVersion = "22.05"; # Did you read the comment?
 
 
-# Extra Files Systems
-fileSystems."/shared" =
-  { device = "/dev/disk/by-uuid/7eb6c440-b26d-48d9-b8e9-bce47a46dfa1";
-    fsType = "ext4";
-  };
+  # Extra Files Systems
+  fileSystems."/shared" =
+    { device = "/dev/disk/by-uuid/7eb6c440-b26d-48d9-b8e9-bce47a46dfa1";
+      fsType = "ext4";
+    };
 
-fileSystems."/extension" =
-  { device = "/dev/disk/by-uuid/d3900119-e611-4e5a-887c-cd1dbf3711b4";
-    fsType = "ext4";
-  };
+  fileSystems."/extension" =
+    { device = "/dev/disk/by-uuid/d3900119-e611-4e5a-887c-cd1dbf3711b4";
+      fsType = "ext4";
+    };
 
 
 }
